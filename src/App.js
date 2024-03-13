@@ -98,7 +98,7 @@ function App() {
   };
 
   return (
-    <div className="bg-gray-300 h-screen">
+    <div className="bg-gray-300">
       <Toaster />
       <div className="pt-[70px]">
         <div className="shadow-lg mx-5">
@@ -126,36 +126,40 @@ function App() {
                   <img src={Gps} className="h-[20px] w-[20px] cursor-pointer" />
                 </div>
               </div>
-              <div className="mt-10">
-                <img
-                  src={`https://openweathermap.org/img/wn/${finalData?.weather[0]?.icon}@2x.png`}
-                  className="h-[300px] w-[300px] object-cover"
-                />
-              </div>
-              <div className="mx-5">
-                <div className="">
-                  <h1 className="text-[40px] font-semibold">12&deg;C</h1>
-                  <span className="text-[20px] text-gray-400">
-                    {convertEpochToDateDayTimeWithAMPM(finalData?.dt)}
-                  </span>
-                </div>
-                <hr className="mt-10 mb-10" />
-                <div>
-                  {finalData?.weather?.map((el, i) => {
-                    return (
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={`https://openweathermap.org/img/wn/${el?.icon}@2x.png`}
-                          className="h-[20px] w-[20px]"
-                        />
-                        <span className="font-semibold capitalize">
-                          {el?.description}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+              {finalData && (
+                <>
+                  <div className="mt-10">
+                    <img
+                      src={`https://openweathermap.org/img/wn/${finalData?.weather?.[0]?.icon}@2x.png`}
+                      className="h-[300px] w-[300px] object-cover"
+                    />
+                  </div>
+                  <div className="mx-5">
+                    <div className="">
+                      <h1 className="text-[40px] font-semibold">12&deg;C</h1>
+                      <span className="text-[20px] text-gray-400">
+                        {convertEpochToDateDayTimeWithAMPM(finalData?.dt)}
+                      </span>
+                    </div>
+                    <hr className="mt-10 mb-10" />
+                    <div>
+                      {finalData?.weather?.map((el, i) => {
+                        return (
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={`https://openweathermap.org/img/wn/${el?.icon}@2x.png`}
+                              className="h-[20px] w-[20px]"
+                            />
+                            <span className="font-semibold capitalize">
+                              {el?.description}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="bg-gray-200 w-[75%] p-5">
               <div className="mx-10">
@@ -167,129 +171,136 @@ function App() {
                     Week
                   </span>
                 </div>
-                <div className="mt-[80px]">
-                  <div className="bg-white shadow-md text-center items-center p-3 flex flex-col w-[120px] h-[150px] rounded-xl">
-                    <div className="text-[20px] mt-2  font-semibold">Sun</div>
-                    <div className="mt-4">
-                      <img src={Clouds} className="h-[30px] w-[30px]" />
-                    </div>
-                    <div className="mt-4">
-                      <span className="font-bold">15&deg;</span>
-                      <span className="text-gray-500">-3&deg;</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <h3 className="font-semibold text-[25px]">
-                    Today's Highlights
-                  </h3>
-                  {finalData ? (
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            UV Index
-                          </span>
-                          <div className="mt-5 text-center">
-                            <div className="font-semibold mt-5 text-[30px]">
-                              5
-                            </div>
-                          </div>
+                {finalData ? (
+                  <>
+                    <div className="mt-[80px]">
+                      <div className="bg-white shadow-md text-center items-center p-3 flex flex-col w-[120px] h-[150px] rounded-xl">
+                        <div className="text-[20px] mt-2  font-semibold">
+                          Sun
                         </div>
-                      </div>
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            Wind Status
-                          </span>
-                          <div className="mt-5">
-                            <div className="font-semibold text-[30px]">
-                              {finalData?.wind?.speed} km/h
-                            </div>
-                            <div className="font-semibold mt-5 text-[20px]">
-                              {degreesToCompassDirection(finalData?.wind?.deg)}
-                              &deg;
-                            </div>
-                          </div>
+                        <div className="mt-4">
+                          <img src={Clouds} className="h-[30px] w-[30px]" />
                         </div>
-                      </div>
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            Sunrise & Sunset
-                          </span>
-                          <div className="mt-5">
-                            <div className="font-semibold flex items-center gap-2 text-[20px]">
-                              <img
-                                src={UpArrowIcon}
-                                className="h-[30px] w-[30px]"
-                              />
-                              {convertEpochToDateTimeWithAMPM(
-                                finalData?.sys?.sunrise
-                              )}
-                            </div>
-                            <div className="font-semibold mt-4 flex items-center gap-2 text-[20px]">
-                              <img
-                                src={DownArrowIcon}
-                                className="h-[30px] w-[30px]"
-                              />
-                              {convertEpochToDateTimeWithAMPM(
-                                finalData?.sys?.sunset
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            Humidity
-                          </span>
-                          <div className="mt-5">
-                            <div className="font-semibold flex items-center gap-2 text-[20px]">
-                              {finalData?.main?.humidity}%
-                            </div>
-                            <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
-                              Normal
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            Visibility
-                          </span>
-                          <div className="mt-5">
-                            <div className="font-semibold flex items-center gap-2 text-[20px]">
-                              {finalData?.main?.humidity}%
-                            </div>
-                            <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
-                              Average
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
-                        <div className="mx-3">
-                          <span className="text-gray-400 text-[20px] font-semibold">
-                            Air Quality
-                          </span>
-                          <div className="mt-5">
-                            <div className="font-semibold flex items-center gap-2 text-[20px]">
-                              105
-                            </div>
-                            <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
-                              Unhealthy
-                            </div>
-                          </div>
+                        <div className="mt-4">
+                          <span className="font-bold">15&deg;</span>
+                          <span className="text-gray-500">-3&deg;</span>
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    "No Data Found, Enter Your Cuty"
-                  )}
-                </div>
+                    <div className="mt-10">
+                      <h3 className="font-semibold text-[25px]">
+                        Today's Highlights
+                      </h3>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              UV Index
+                            </span>
+                            <div className="mt-5 text-center">
+                              <div className="font-semibold mt-5 text-[30px]">
+                                5
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              Wind Status
+                            </span>
+                            <div className="mt-5">
+                              <div className="font-semibold text-[30px]">
+                                {finalData?.wind?.speed} km/h
+                              </div>
+                              <div className="font-semibold mt-5 text-[20px]">
+                                {degreesToCompassDirection(
+                                  finalData?.wind?.deg
+                                )}
+                                &deg;
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              Sunrise & Sunset
+                            </span>
+                            <div className="mt-5">
+                              <div className="font-semibold flex items-center gap-2 text-[20px]">
+                                <img
+                                  src={UpArrowIcon}
+                                  className="h-[30px] w-[30px]"
+                                />
+                                {convertEpochToDateTimeWithAMPM(
+                                  finalData?.sys?.sunrise
+                                )}
+                              </div>
+                              <div className="font-semibold mt-4 flex items-center gap-2 text-[20px]">
+                                <img
+                                  src={DownArrowIcon}
+                                  className="h-[30px] w-[30px]"
+                                />
+                                {convertEpochToDateTimeWithAMPM(
+                                  finalData?.sys?.sunset
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              Humidity
+                            </span>
+                            <div className="mt-5">
+                              <div className="font-semibold flex items-center gap-2 text-[20px]">
+                                {finalData?.main?.humidity}%
+                              </div>
+                              <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
+                                Normal
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              Visibility
+                            </span>
+                            <div className="mt-5">
+                              <div className="font-semibold flex items-center gap-2 text-[20px]">
+                                {finalData?.main?.humidity}%
+                              </div>
+                              <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
+                                Average
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-white mt-5 shadow-md rounded-xl w-[250px] p-5">
+                          <div className="mx-3">
+                            <span className="text-gray-400 text-[20px] font-semibold">
+                              Air Quality
+                            </span>
+                            <div className="mt-5">
+                              <div className="font-semibold flex items-center gap-2 text-[20px]">
+                                105
+                              </div>
+                              <div className="font-semibold flex items-center mt-5 gap-2 text-[15px]">
+                                Unhealthy
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  "No Data Found, Enter Your Cuty"
+                )}
               </div>
             </div>
           </div>
